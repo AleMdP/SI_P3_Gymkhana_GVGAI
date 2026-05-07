@@ -1,4 +1,4 @@
-package si2026.alejandrodelpozoalu.p03;
+package si2026.alejandrodelpozoalu.p04;
 
 import core.game.Observation;
 import core.game.StateObservation;

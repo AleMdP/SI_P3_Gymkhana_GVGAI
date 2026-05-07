@@ -9,7 +9,7 @@ public class Practica_XX_exe {
 
     public static void main(String[] args) {
 
-		String p3 = "si2026.alejandrodelpozoalu.p03.Practica_03";
+		String p3 = "si2026.alejandrodelpozoalu.p04.Practica_03";
 		
 		//Load available games
 		String spGamesCollection =  "examples/all_games_sp.csv";
@@ -21,7 +21,7 @@ public class Practica_XX_exe {
 				
 		// Game and level to play
 		int gameIdx  = 49;
-		int levelIdx = 2; // level names from 0 to 4 (game_lvlN.txt).
+		int levelIdx = 4; // level names from 0 to 4 (game_lvlN.txt).
 		
 		String gameName = games[gameIdx][1];
 		String game = games[gameIdx][0];
