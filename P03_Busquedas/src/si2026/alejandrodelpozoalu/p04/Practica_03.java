@@ -141,13 +141,13 @@ public class Practica_03 extends AbstractPlayer {
     }
 
     private ACTIONS calcularSiguienteAccion(StateObservation stateObs, int startX, int startY) {
-        Queue<Nodo> queue = new LinkedList<>();
+        Queue<Nodo> cola = new LinkedList<>();
         boolean[][] visitado = new boolean[columnas][filas];
-        queue.add(new Nodo(startX, startY, null, null));
+        cola.add(new Nodo(startX, startY, null, null));
         visitado[startX][startY] = true;
 
-        while (!queue.isEmpty()) {
-            Nodo curr = queue.poll();
+        while (!cola.isEmpty()) {
+            Nodo curr = cola.poll();
 
             if (grid[curr.x][curr.y] == META) {
                 return obtenerPrimerMovimiento(curr);
@@ -177,9 +177,9 @@ public class Practica_03 extends AbstractPlayer {
 //                            System.out.println(destino[0] + ", " + destino[1]);
 //                            System.out.println();
                             visitado[nx][ny] = true;
-                            Nodo destNode = new Nodo(destino[0], destino[1], curr, acts[i]);
+                            Nodo nodoDest = new Nodo(destino[0], destino[1], curr, acts[i]);
                             visitado[destino[0]][destino[1]] = true;
-                            queue.add(destNode);
+                            cola.add(nodoDest);
                         }
                         continue;
                     }
@@ -193,14 +193,14 @@ public class Practica_03 extends AbstractPlayer {
                 if (esOrillaDeSpawner) {
 //                	System.out.println("Esperando orilla");
                 	visitado[nx][ny] = true;
-                    queue.add(new Nodo(nx, ny, curr, acts[i]));
+                    cola.add(new Nodo(nx, ny, curr, acts[i]));
                     continue;
                 }
 
-                // CASO TIERRA / PLATADORMA / META
+                // CASO SUELO / PLATADORMA / META
                 if (grid[nx][ny] == SUELO || grid[nx][ny] == PLATAFORMA || grid[nx][ny] == META) {
                     visitado[nx][ny] = true;
-                    queue.add(new Nodo(nx, ny, curr, acts[i]));
+                    cola.add(new Nodo(nx, ny, curr, acts[i]));
                 }
             }
         }
