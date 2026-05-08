@@ -14,7 +14,7 @@ public class Practica_03 extends AbstractPlayer {
     int[][] grid;
     int[] meta;
     
-    final int EMPTY = 0, WALL = 1, WATER = 2, GOAL = 3, TRAMPOLIN = 4, LANDING = 5, NENUFAR = 6, SPAWNER_L = 7, SPAWNER_R = 8;
+    final int SUELO = 0, ARBOL = 1, AGUA = 2, META = 3, TRAMPOLIN = 4, PLATAFORMA = 5, NENUFAR = 6, SPAWNER_I = 7, SPAWNER_D = 8;
     
     Set<String> trampolinesInseguros = new HashSet<>();
     Set<String> filasSpawnersI, filasSpawnersD, filasSpawners;
@@ -73,7 +73,7 @@ public class Practica_03 extends AbstractPlayer {
 //        System.out.println(sigA);
 
         // Si hay nenufar arriba, estoy en nenufar y la meta esta arriba, voy a ese nenufar
-        if((grid[x][y-1] == NENUFAR || grid[x][y-1] == LANDING) && y > meta[1] && grid[x][y] == NENUFAR) {
+        if((grid[x][y-1] == NENUFAR || grid[x][y-1] == PLATAFORMA) && y > meta[1] && grid[x][y] == NENUFAR) {
         	return ACTIONS.ACTION_UP;
         }
         
@@ -82,23 +82,23 @@ public class Practica_03 extends AbstractPlayer {
         int mov = 0;
         if(sigA == ACTIONS.ACTION_DOWN) {
     		mov = 1;
-        	if(grid[x][y+1] == WATER) {
+        	if(grid[x][y+1] == AGUA) {
         		esperarNenufar = true;
         	}
         }        
         else if(sigA == ACTIONS.ACTION_UP) {
     		mov = -1;
-        	if(grid[x][y-1] == WATER) {
+        	if(grid[x][y-1] == AGUA) {
         		esperarNenufar = true;
         	}
         }
         else if(sigA == ACTIONS.ACTION_RIGHT) {
-        	if(grid[x+1][y] == WATER || grid[x+1][y] == NENUFAR) {
+        	if(grid[x+1][y] == AGUA || grid[x+1][y] == NENUFAR) {
         		return ACTIONS.ACTION_NIL;
         	}
         }
         else if(sigA == ACTIONS.ACTION_LEFT) {
-        	if(grid[x-1][y] == WATER || grid[x-1][y] == NENUFAR) {
+        	if(grid[x-1][y] == AGUA || grid[x-1][y] == NENUFAR) {
         		return ACTIONS.ACTION_NIL;
         	}
         }
@@ -121,18 +121,18 @@ public class Practica_03 extends AbstractPlayer {
         ArrayList<Observation>[][] obs = stateObs.getObservationGrid();
         for (int i = 0; i < columnas; i++) {
             for (int j = 0; j < filas; j++) {
-                grid[i][j] = EMPTY;
+                grid[i][j] = SUELO;
                 for (Observation o : obs[i][j]) {
-                    if (o.category == 2) grid[i][j] = GOAL;
+                    if (o.category == 2) grid[i][j] = META;
                     else if (o.category == 6) {
-                    	if(o.itype == 12) grid[i][j] = LANDING;
+                    	if(o.itype == 12) grid[i][j] = PLATAFORMA;
                     	else if(o.itype == 10 || o.itype == 11) grid[i][j] = NENUFAR;
                     }
                     else if (o.category == 4) {
-                        if (o.itype == 0) grid[i][j] = WALL;
-                        else if (o.itype == 3) grid[i][j] = WATER;
-                        else if (o.itype == 7) grid[i][j] = SPAWNER_L;
-                        else if (o.itype == 8) grid[i][j] = SPAWNER_R;
+                        if (o.itype == 0) grid[i][j] = ARBOL;
+                        else if (o.itype == 3) grid[i][j] = AGUA;
+                        else if (o.itype == 7) grid[i][j] = SPAWNER_I;
+                        else if (o.itype == 8) grid[i][j] = SPAWNER_D;
                         else if (o.itype >= 14 && o.itype <= 17) grid[i][j] = TRAMPOLIN;
                     }
                 }
@@ -149,7 +149,7 @@ public class Practica_03 extends AbstractPlayer {
         while (!queue.isEmpty()) {
             Nodo curr = queue.poll();
 
-            if (grid[curr.x][curr.y] == GOAL) {
+            if (grid[curr.x][curr.y] == META) {
                 return obtenerPrimerMovimiento(curr);
             }
 
@@ -198,7 +198,7 @@ public class Practica_03 extends AbstractPlayer {
                 }
 
                 // CASO TIERRA / PLATADORMA / META
-                if (grid[nx][ny] == EMPTY || grid[nx][ny] == LANDING || grid[nx][ny] == GOAL) {
+                if (grid[nx][ny] == SUELO || grid[nx][ny] == PLATAFORMA || grid[nx][ny] == META) {
                     visitado[nx][ny] = true;
                     queue.add(new Nodo(nx, ny, curr, acts[i]));
                 }
@@ -256,13 +256,13 @@ public class Practica_03 extends AbstractPlayer {
 //            System.out.println();
             if (lx < 0 || lx >= columnas || ly < 0 || ly >= filas) break;
             
-            if (grid[lx][ly] == LANDING || grid[lx][ly] == GOAL) return new int[]{lx, ly};
-            if (grid[lx][ly] == WALL) {
-            	if(grid[lx-dx][ly-dy] != WATER) return new int[] {lx-dx, ly-dy};
+            if (grid[lx][ly] == PLATAFORMA || grid[lx][ly] == META) return new int[]{lx, ly};
+            if (grid[lx][ly] == ARBOL) {
+            	if(grid[lx-dx][ly-dy] != AGUA) return new int[] {lx-dx, ly-dy};
             	else return null;
             }
             if (grid[lx][ly] == TRAMPOLIN) {
-            	grid[tx][ty] = EMPTY;
+            	grid[tx][ty] = SUELO;
             	return calcularDestinoTrampolin(stateObs, lx, ly);
             }
             
