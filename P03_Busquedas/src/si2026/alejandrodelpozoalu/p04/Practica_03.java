@@ -32,7 +32,7 @@ public class Practica_03 extends AbstractPlayer {
         ArrayList<Observation>[][] obs = stateObs.getObservationGrid();
         for (int i = 0; i < columnas; i++) {
             for (int j = 0; j < filas; j++) {
-                for (Observation o : obs[i][j]) {
+                for (Observation o : obs[i][j]) { /// CAMBIAR PARA QUE NO USE EL FOR
                     if (o.category == 4) {
                         if (o.itype == 7) {
                         	for(int k = i; k<columnas; k++) {
@@ -66,8 +66,8 @@ public class Practica_03 extends AbstractPlayer {
 //        System.out.println(filasSpawnersI + ", " + filasSpawnersD);
         
         Vector2d posAvatar = stateObs.getAvatarPosition();
-        int x = (int) (posAvatar.x / bloque);
-        int y = (int) (posAvatar.y / bloque);
+        int x = (int) ((posAvatar.x + (bloque / 2.0)) / bloque);
+        int y = (int) ((posAvatar.y + (bloque / 2.0)) / bloque);
         
         ACTIONS sigA = calcularSiguienteAccion(stateObs, x, y);
 //        System.out.println(sigA);
