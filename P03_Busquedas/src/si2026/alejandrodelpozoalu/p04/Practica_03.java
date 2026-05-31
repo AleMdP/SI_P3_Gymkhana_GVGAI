@@ -32,7 +32,7 @@ public class Practica_03 extends AbstractPlayer {
         ArrayList<Observation>[][] obs = stateObs.getObservationGrid();
         for (int i = 0; i < columnas; i++) {
             for (int j = 0; j < filas; j++) {
-                for (Observation o : obs[i][j]) { /// CAMBIAR PARA QUE NO USE EL FOR
+                for (Observation o : obs[i][j]) {
                     if (o.category == 4) {
                         if (o.itype == 7) {
                         	for(int k = i; k<columnas; k++) {
